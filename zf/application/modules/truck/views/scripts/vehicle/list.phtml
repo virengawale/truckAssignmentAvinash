@@ -1,0 +1,59 @@
+
+<link rel="stylesheet" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+    crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 'crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<div class="container hide">
+	<!--button type="button" name="getVehicles" id="getVehicle">Get Vehicle</button>
+	<button type="button" name="addVehicles" id="addVehicle">Add Vehicle</button> -->
+<br><br>
+    <table id="vehicleTable">
+    </table>
+</div>
+
+<div class="container">
+    <?php echo $this->vehicleForm; ?>
+</div>
+
+<script>
+    function prepareData(data) {
+        var vehicleDetails = [];
+        for (key in data) {
+            vehicleDetails.push([data[key].brand, data[key].model, data[key].reg_year, data[key].price]);
+        }
+
+        return vehicleDetails;
+    }
+
+    function getVehicles() {
+        var vehicleUrl = '/truck/vehicle/vehicles';
+
+        $.get(vehicleUrl).done(function (response) {
+            $('#vehicleTable').dataTable({
+                data : prepareData(response.data),
+                columns : [
+                    {title: "Brand"},
+                    {title: "Model"},
+                    {title: "Registration Year"},
+                    {title: "Price"},
+                ]
+            });
+        });
+    }
+
+    function bindUI() {
+        getVehicles();
+     //   $(document).click('#getVehicles', function () {
+       //     getVehicles();
+       // });
+    }
+
+    $(document).ready(function () {
+        bindUI();
+    });
+</script>
